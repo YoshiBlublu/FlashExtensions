@@ -1,6 +1,6 @@
 <properties>
-  min="3" max="999"  defaultValue="10"  type="Double"   />
-	<property name="Angles (degrés)"  variable="angle"  min="1" max="70"  defaultValue="45"  type="Number"   />
+	<property name="Module (pixels)"  variable="module" min="3" max="999"  defaultValue="10"  type="Double"   />
+	<property name="Angles (degres)"  variable="angle"  min="1" max="70"  defaultValue="45"  type="Number"   />
 	<property name="Origine"  variable="origine"  defaultValue="false"  type="Boolean"   />
 	<property name="Type"   variable="type"  list="double, origine, pointer"  defaultValue="0" type="Strings"   />
 	<property name="Update XMLUI" variable="update" defaultValue="false" type="Boolean" />
