@@ -8,10 +8,6 @@
 */
 
 var didDrag = false;
-var thelineWithArrows = [[0],[0],[0]];
-var module = 10;
-var angle = Math.PI/4;
-var origine = false;
 var update = false;
 
 /*
@@ -20,13 +16,13 @@ définir toutes les informations dont Flash a besoin à propos de cet outil.
 */
 function configureTool()
 {
-	theTool = fl.tools.activeTool;
-	theTool.setToolName("lineWithArrow Tool");
-	theTool.setMenuString("lineWithArrow Tool");
-	theTool.setToolTip("Line with arrows tool.");
-	theTool.setIcon("lineWithArrow.png");
-	theTool.setOptionsFile("lineWithArrow.xml");
-	theTool.showPIControl( "fill", false );
+	var theTool = fl.tools.activeTool;
+	theTool.setToolName("[Name] Tool");
+	theTool.setMenuString("[Name] Tool");
+	theTool.setToolTip("[Name] Tool");
+	theTool.setIcon("[nametool].png");
+	//theTool.setOptionsFile("nametool.xml");
+	//theTool.showPIControl( "fill", false );
 
 	theTool.setPI("shape");
 }
@@ -37,11 +33,7 @@ tools.activeTool).
 */ 
 function notifySettingsChanged()
 {
-	var theTool = fl.tools.activeTool;
-	module = theTool.module;
-	angle = (theTool.angle*(2*Math.PI))/360;
-	origine = theTool.origine;
-	update = theTool.miseAJour;
+	// statements
 }
 /*
 Cette fonction est appelée lorsque l'outil extensible est actif et que l'utilisateur déplace sa souris, ce qui permet au script
@@ -73,8 +65,14 @@ Cette fonction est appelée si l’outil extensible est actif lors d’un clic d
 */
 function mouseDown()
 {
-	fl.drawingLayer.beginDraw();
-	didDrag = false;
+	//fl.drawingLayer.beginDraw();
+	//didDrag = false;
+}
+// Variante
+/*
+function mouseDown(pt) 
+{
+	fl.trace("x = "+ pt.x+" :: y = "+pt.y);
 }
 */
 /*
@@ -95,13 +93,7 @@ sur la scène.
 */
 function mouseUp()
 {
-	fl.drawingLayer.endDraw();
-	
-	if (didDrag)
-	{
-		var path = lineWithArrowsToPath();
-		path.makeShape();
-	}
+	// statements
 }
 /*
 Cette fonction est appelée si l’outil extensible est actif lorsque l’utilisateur appuie sur une touche. Le script doit alors
