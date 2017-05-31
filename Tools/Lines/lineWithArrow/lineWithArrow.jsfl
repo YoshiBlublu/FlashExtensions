@@ -101,9 +101,10 @@ function mouseMove(mouseLoc)
 		var point1;
 		var point2;
 		
+		point1 = {x:pt1.x, y:pt1.y};
+		point2 = {x:pt2.x, y:pt2.y};
+		
 /* 		if ((fl.tools.shiftIsDown) && (!fl.tools.altIsDown)) {
-			point1 = {x:pt1.x, y:pt1.y};
-			point2 = {x:pt2.x, y:pt2.y};
 			if(absdx > absdy) {
 				point2.y = point1.y + (absdx * (dy > 0? 1 : -1));
 			} else {
@@ -111,13 +112,9 @@ function mouseMove(mouseLoc)
 			}
 		} 
 		else if ((fl.tools.shiftIsDown)&&(fl.tools.altIsDown)) {
-			point1 = {x:pt1.x, y:pt1.y};
-			point2 = {x:pt2.x, y:pt2.y};
-			
+		
 			var longueur = Math.sqrt(Math.pow(absdx,2)+Math.pow(absdy,2));
 			var angleLine = Math.acos(absdx/longueur);
-			//
-			//
 			//
 			if ((dy<0)&&(dx<0)){
 				angleLine = ((Math.PI/2-angleLine) + Math.PI/2);
@@ -147,13 +144,7 @@ function mouseMove(mouseLoc)
 			//changelineWithArrowsModule(pt2);
 
 		//} 
-		//else {
-
-			point1 = {x:pt1.x, y:pt1.y};
-			point2 = {x:pt2.x, y:pt2.y};
-
-		//}
-		
+	
 		if ((absdx > 2) || (absdy > 2)) {
 			didDrag = true;
 			buildlineWithArrowsObj(point1,  point2);
@@ -179,6 +170,7 @@ function mouseUp()
 	{
 		var path = lineWithArrowsToPath();
 		path.makeShape();
+		didDrag = false;
 	}
 }
 /*
@@ -216,6 +208,7 @@ function keyUp()
 */
 
 /*
+Fonction qui calcul les points pour le dessin de la ligne avec sa flèche.
 */
 function buildlineWithArrowsObj(pt1,  pt2){
 	//
@@ -226,8 +219,6 @@ function buildlineWithArrowsObj(pt1,  pt2){
 	var longueur = Math.sqrt(Math.pow(absdx,2)+Math.pow(absdy,2));
 	var angleLine = Math.acos(absdx/longueur);
 	//
-	//
-	//
 	if ((dy<0)&&(dx<0)){
 		angleLine = ((Math.PI/2-angleLine) + Math.PI/2);
 	}
@@ -237,27 +228,27 @@ function buildlineWithArrowsObj(pt1,  pt2){
 	if ((dy>=0)&&(dx>0)){
 		angleLine = ((Math.PI/2-angleLine) + 3*Math.PI/2);
 	}
-	var ofX1=0;
-	var ofY1=0;
-	var ofX2=0;
-	var ofY2=0;
-	var ofX3=0;
-	var ofY3=0;
-	var ofX4=0;
-	var ofY4=0;
+	var offsetX1=0;
+	var offsetY1=0;
+	var offsetX2=0;
+	var offsetY2=0;
+	var offsetX3=0;
+	var offsetY3=0;
+	var offsetX4=0;
+	var offsetY4=0;
 	//
 	if (origine) {
-		ofX1 = (module * Math.cos(2*Math.PI-(angle+angleLine)));
-		ofY1 = (module * Math.sin(2*Math.PI-(angle+angleLine)));
-		ofX2 = (module * Math.cos(2*Math.PI-(angleLine-angle)));
-		ofY2 = (module * Math.sin(2*Math.PI-(angleLine-angle)));
+		offsetX1 = (module * Math.cos(2*Math.PI-(angle+angleLine)));
+		offsetY1 = (module * Math.sin(2*Math.PI-(angle+angleLine)));
+		offsetX2 = (module * Math.cos(2*Math.PI-(angleLine-angle)));
+		offsetY2 = (module * Math.sin(2*Math.PI-(angleLine-angle)));
 	}
 	//
 	if (!origine) {
-		ofX3 = (module * Math.cos(2*Math.PI-(angle+angleLine)));
-		ofY3 = (module * Math.sin(2*Math.PI-(angle+angleLine)));
-		ofX4 = (module * Math.cos(2*Math.PI-(angleLine-angle)));
-		ofY4 = (module * Math.sin(2*Math.PI-(angleLine-angle)));
+		offsetX3 = (module * Math.cos(2*Math.PI-(angle+angleLine)));
+		offsetY3 = (module * Math.sin(2*Math.PI-(angle+angleLine)));
+		offsetX4 = (module * Math.cos(2*Math.PI-(angleLine-angle)));
+		offsetY4 = (module * Math.sin(2*Math.PI-(angleLine-angle)));
 	}
 	//
 	// Définition des deux points de la ligne
@@ -269,23 +260,23 @@ function buildlineWithArrowsObj(pt1,  pt2){
 	//
 	// Définition des points des flèches
 	//
-	thelineWithArrows[1][0] = pt1.x+ofX1;
-	thelineWithArrows[1][1] = pt1.y+ofY1;
+	thelineWithArrows[1][0] = pt1.x+offsetX1;
+	thelineWithArrows[1][1] = pt1.y+offsetY1;
 	thelineWithArrows[1][2] = pt1.x;
 	thelineWithArrows[1][3] = pt1.y;
-	thelineWithArrows[1][4] = pt1.x+ofX2;
-	thelineWithArrows[1][5] = pt1.y+ofY2;
+	thelineWithArrows[1][4] = pt1.x+offsetX2;
+	thelineWithArrows[1][5] = pt1.y+offsetY2;
 	//
-	thelineWithArrows[2][0] = pt2.x-ofX3;
-	thelineWithArrows[2][1] = pt2.y-ofY3;
+	thelineWithArrows[2][0] = pt2.x-offsetX3;
+	thelineWithArrows[2][1] = pt2.y-offsetY3;
 	thelineWithArrows[2][2] = pt2.x;
 	thelineWithArrows[2][3] = pt2.y;
-	thelineWithArrows[2][4] = pt2.x-ofX4;
-	thelineWithArrows[2][5] = pt2.y-ofY4;
+	thelineWithArrows[2][4] = pt2.x-offsetX4;
+	thelineWithArrows[2][5] = pt2.y-offsetY4;
 	return;
 }
 /*
-	Dessin de la ligne avec sa flèche sur le DrawingLayer.
+Fonction de dessin de la ligne avec sa flèche sur le DrawingLayer.
 */
 function drawlineWithArrowsObj()
 {
@@ -301,6 +292,7 @@ function drawlineWithArrowsObj()
 	}
 }
 /*
+Fonction dessinant une ligne sur le DrawingLayer.
 */
 function DrawingLayerLineTo(index1, index2)
 {
@@ -312,6 +304,7 @@ function DrawingLayerLineTo(index1, index2)
 	fl.drawingLayer.lineTo(tmpPt.x,  tmpPt.y);	
 }
 /*
+Fonction déplaçant la position courante sur le DrawingLayer.
 */
 function DrawingLayerMoveTo(index1, index2)
 {
@@ -323,6 +316,7 @@ function DrawingLayerMoveTo(index1, index2)
 	fl.drawingLayer.moveTo(tmpPt.x,  tmpPt.y);
 }
 /*
+Fonction retournant le "path" pour le dessin de la ligne sur la scène courante.
 */
 function lineWithArrowsToPath()
 {
@@ -341,6 +335,7 @@ function lineWithArrowsToPath()
 	return path;
 }
 /*
+Fonction modifiant l'angle de la flèche.
 */
 function changelineWithArrowsAngle(pt2)
 {
@@ -357,6 +352,7 @@ function changelineWithArrowsAngle(pt2)
 	return;
 }
 /*
+Fonction modifiant le module de la flèche.
 */
 function changelineWithArrowsModule(pt2) {
 	var incx = (pt2.x - refPoint.x) * 0.5;
@@ -373,7 +369,7 @@ function changelineWithArrowsModule(pt2) {
 }
 
 /*
-
+Fonction calculant les coordonnées x et y d'un point en fonction de la matrice de vue.
 */
 function transformPoint(pt, mat)
 {
