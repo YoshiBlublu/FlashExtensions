@@ -1,5 +1,7 @@
 /*
-	Fichier représentant le squelette d'un outil en JSFL pour l'environnement Flash.
+	Fichier du code d'un outil pour l'environnement Flash écrit en JSFL.
+	Cet outil permet de dessiner une ligne avec une flèche filaire à l'une des extrêmités.
+	Le module et l'angle de la flèche sont modifiables.
 	Johann Bescond, mai 2017
 */
 
@@ -9,6 +11,7 @@
 
 var didDrag = false;
 var thelineWithArrows = [[0],[0],[0]];
+
 var module = 10;
 var angle = Math.PI/4;
 var origine = false;
@@ -39,7 +42,7 @@ function notifySettingsChanged()
 {
 	var theTool = fl.tools.activeTool;
 	module = theTool.module;
-	angle = (theTool.angle*(2*Math.PI))/360;
+	angle = (theTool.angle * (2 * Math.PI)) / 360;
 	origine = theTool.origine;
 	update = theTool.update;
 }
@@ -345,27 +348,26 @@ function changelineWithArrowsAngle(pt2)
 	
 	if (angle < 0) angle = 0;
 	if (angle > Math.PI/2) angle = Math.PI/2;
-	if (miseAJour) {
+	if (update) {
 		var theTool = fl.tools.activeTool;
 		theTool.angle = Math.floor((angle/(2*Math.PI))*360);
 	}
-	return;
 }
 /*
 Fonction modifiant le module de la flèche.
 */
+var maxModule = 999;
 function changelineWithArrowsModule(pt2) {
 	var incx = (pt2.x - refPoint.x) * 0.5;
 	
 	module = savedModule + incx;
 	
 	if (module < 0) angle = 0;
-	if (module > 999) module = 999;
-	if (miseAJour) {
+	if (module > maxModule) module = maxModule;
+	if (update) {
 		var theTool = fl.tools.activeTool;
 		theTool.module = module;
 	}
-	return;
 }
 
 /*
