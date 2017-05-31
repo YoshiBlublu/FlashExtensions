@@ -83,6 +83,7 @@ function mouseDoubleClick()
 {
 	// statements
 }
+
 /*
 Fonction appelée lorsque l'outil extensible est actif et que l'utilisateur survole un point précis de la scène avec sa souris.
 Le ou les boutons de la souris peuvent être enfoncés ou non.
@@ -97,6 +98,8 @@ function mouseMove(mouseLoc)
 		var dy = pt2.y - pt1.y;
 		var absdx = Math.abs(dx);
 		var absdy = Math.abs(dy);
+		var point1;
+		var point2;
 		
 		if ((fl.tools.shiftIsDown) && (!fl.tools.altIsDown)) {
 			point1 = {x:pt1.x, y:pt1.y};
@@ -106,7 +109,8 @@ function mouseMove(mouseLoc)
 			} else {
 				point2.x = point1.x + (absdy * (dx > 0? 1 : -1));
 			}
-		} else if ((fl.tools.shiftIsDown)&&(fl.tools.altIsDown)) {
+		} 
+		else if ((fl.tools.shiftIsDown)&&(fl.tools.altIsDown)) {
 			point1 = {x:pt1.x, y:pt1.y};
 			point2 = {x:pt2.x, y:pt2.y};
 			
@@ -132,15 +136,18 @@ function mouseMove(mouseLoc)
 				point2.x = point1.x;
 			}
 			
-		} else if ((!fl.tools.altIsDown)&&(fl.tools.ctlIsDown)) {
+		} 
+		else if ((!fl.tools.altIsDown)&&(fl.tools.ctlIsDown)) {
 
 			changelineWithArrowsAngle(pt2);
 
-		} else if ((fl.tools.altIsDown)&&(fl.tools.ctlIsDown)) {
+		} 
+		else if ((fl.tools.altIsDown)&&(fl.tools.ctlIsDown)) {
 
 			changelineWithArrowsModule(pt2);
 
-		} else {
+		} 
+		else {
 
 			point1 = {x:pt1.x, y:pt1.y};
 			point2 = {x:pt2.x, y:pt2.y};
@@ -278,42 +285,87 @@ function buildlineWithArrowsObj(pt1,  pt2){
 function drawlineWithArrowsObj()
 {
 	if (thelineWithArrows[0].length != 0){
-		var tmpPt  = new Object;
-		var viewMat = fl.getDocumentDOM().viewMatrix;
-		tmpPt.x = thelineWithArrows[0][0];
-		tmpPt.y = thelineWithArrows[0][1];
-		transformPoint(tmpPt,  viewMat);
-		fl.drawingLayer.moveTo(tmpPt.x,  tmpPt.y);
-		tmpPt.x = thelineWithArrows[0][2];
-		tmpPt.y = thelineWithArrows[0][3];
-		transformPoint(tmpPt,  viewMat);
-		fl.drawingLayer.lineTo(tmpPt.x,  tmpPt.y);
-		tmpPt.x = thelineWithArrows[1][0];
-		tmpPt.y = thelineWithArrows[1][1];
-		transformPoint(tmpPt,  viewMat);
-		fl.drawingLayer.moveTo(tmpPt.x,  tmpPt.y);
-		tmpPt.x = thelineWithArrows[1][2];
-		tmpPt.y = thelineWithArrows[1][3];
-		transformPoint(tmpPt,  viewMat);
-		fl.drawingLayer.lineTo(tmpPt.x,  tmpPt.y);		
-		tmpPt.x = thelineWithArrows[1][4];
-		tmpPt.y = thelineWithArrows[1][5];
-		transformPoint(tmpPt,  viewMat);
-		fl.drawingLayer.lineTo(tmpPt.x,  tmpPt.y);
-		tmpPt.x = thelineWithArrows[2][0];
-		tmpPt.y = thelineWithArrows[2][1];
-		transformPoint(tmpPt,  viewMat);
-		fl.drawingLayer.moveTo(tmpPt.x,  tmpPt.y);
-		tmpPt.x = thelineWithArrows[2][2];
-		tmpPt.y = thelineWithArrows[2][3];
-		transformPoint(tmpPt,  viewMat);
-		fl.drawingLayer.lineTo(tmpPt.x,  tmpPt.y);		
-		tmpPt.x = thelineWithArrows[2][4];
-		tmpPt.y = thelineWithArrows[2][5];
-		transformPoint(tmpPt,  viewMat);
-		fl.drawingLayer.lineTo(tmpPt.x,  tmpPt.y);
+
+		DrawingLayerMoveTo(0,0);
+		
+		//tmpPt.x = thelineWithArrows[0][0];
+		//tmpPt.y = thelineWithArrows[0][1];
+		//transformPoint(tmpPt,  viewMat);
+		//fl.drawingLayer.moveTo(tmpPt.x,  tmpPt.y);
+		
+		DrawingLayerLineTo(0,2);
+		
+		//tmpPt.x = thelineWithArrows[0][2];
+		//tmpPt.y = thelineWithArrows[0][3];
+		//transformPoint(tmpPt,  viewMat);
+		//fl.drawingLayer.lineTo(tmpPt.x,  tmpPt.y);
+		
+		DrawingLayerMoveTo(1,0);
+		
+		//tmpPt.x = thelineWithArrows[1][0];
+		//tmpPt.y = thelineWithArrows[1][1];
+		//transformPoint(tmpPt,  viewMat);
+		//fl.drawingLayer.moveTo(tmpPt.x,  tmpPt.y);
+		
+		DrawingLayerLineTo(1,2);
+		
+		//tmpPt.x = thelineWithArrows[1][2];
+		//tmpPt.y = thelineWithArrows[1][3];
+		//transformPoint(tmpPt,  viewMat);
+		//fl.drawingLayer.lineTo(tmpPt.x,  tmpPt.y);
+		
+		DrawingLayerLineTo(1,4);
+		
+		//tmpPt.x = thelineWithArrows[1][4];
+		//tmpPt.y = thelineWithArrows[1][5];
+		//transformPoint(tmpPt,  viewMat);
+		//fl.drawingLayer.lineTo(tmpPt.x,  tmpPt.y);
+		
+		DrawingLayerMoveTo(2,0);
+		
+		//tmpPt.x = thelineWithArrows[2][0];
+		//tmpPt.y = thelineWithArrows[2][1];
+		//transformPoint(tmpPt,  viewMat);
+		//fl.drawingLayer.moveTo(tmpPt.x,  tmpPt.y);
+		
+		DrawingLayerLineTo(2,2);
+		
+		//tmpPt.x = thelineWithArrows[2][2];
+		//tmpPt.y = thelineWithArrows[2][3];
+		//transformPoint(tmpPt,  viewMat);
+		//fl.drawingLayer.lineTo(tmpPt.x,  tmpPt.y);	
+		
+		DrawingLayerLineTo(2,4);
+		
+		//tmpPt.x = thelineWithArrows[2][4];
+		//tmpPt.y = thelineWithArrows[2][5];
+		//transformPoint(tmpPt,  viewMat);
+		//fl.drawingLayer.lineTo(tmpPt.x,  tmpPt.y);
+		
 		return;
 	}
+}
+/*
+*/
+function DrawingLayerLineTo(index1, index2)
+{
+	var tmpPt  = new Object;
+	var viewMat = fl.getDocumentDOM().viewMatrix;
+	var tmpPt.x = thelineWithArrows[index1][index2];
+	var tmpPt.y = thelineWithArrows[index1][index2+1];
+	transformPoint(tmpPt,  viewMat);
+	fl.drawingLayer.lineTo(tmpPt.x,  tmpPt.y);	
+}
+/*
+*/
+function DrawingLayerMoveTo(index1, index2)
+{
+	var tmpPt  = new Object;
+	var viewMat = fl.getDocumentDOM().viewMatrix;
+	var tmpPt.x = thelineWithArrows[index1][index2];
+	var tmpPt.y = thelineWithArrows[index1][index2+1];
+	transformPoint(tmpPt,  viewMat);
+	fl.drawingLayer.MoveTo(tmpPt.x,  tmpPt.y);		
 }
 /*
 */
