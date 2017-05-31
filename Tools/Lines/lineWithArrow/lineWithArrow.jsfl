@@ -235,14 +235,14 @@ function buildlineWithArrowsObj(pt1,  pt2){
 	var ofX4=0;
 	var ofY4=0;
 	//
-	if (origine < 2) {
+	if (origine) {
 		ofX1 = (module * Math.cos(2*Math.PI-(angle+angleLine)));
 		ofY1 = (module * Math.sin(2*Math.PI-(angle+angleLine)));
 		ofX2 = (module * Math.cos(2*Math.PI-(angleLine-angle)));
 		ofY2 = (module * Math.sin(2*Math.PI-(angleLine-angle)));
 	}
 	//
-	if (origine == 2) {
+	if (!origine) {
 		ofX3 = (module * Math.cos(2*Math.PI-(angle+angleLine)));
 		ofY3 = (module * Math.sin(2*Math.PI-(angle+angleLine)));
 		ofX4 = (module * Math.cos(2*Math.PI-(angleLine-angle)));
