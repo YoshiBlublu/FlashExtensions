@@ -192,22 +192,49 @@ function buildtrapeziumObj(pt1,  pt2){
 function drawtrapeziumObj()
 {
 	if (thetrapezium[0].length != 0){
-		var tmpPt  = new Object();
+/* 		var tmpPt  = new Object();
 		var viewMat = fl.getDocumentDOM().viewMatrix;
 		tmpPt.x = thetrapezium[0][0];
 		tmpPt.y = thetrapezium[0][1];
 		transformPoint(tmpPt,  viewMat);
-		fl.drawingLayer.moveTo(tmpPt.x,  tmpPt.y);
+		fl.drawingLayer.moveTo(tmpPt.x,  tmpPt.y); */
+		DrawingLayerMoveTo(0,0);
 		for (var i=2; i<thetrapezium[0].length; i+=2) {
+			/*
 			tmpPt.x = thetrapezium[0][i];
 			tmpPt.y = thetrapezium[0][i+1];
 			transformPoint(tmpPt,  viewMat);
 			fl.drawingLayer.lineTo(tmpPt.x,  tmpPt.y);
+			*/
+			DrawingLayerLineTo(0,i);
 		}
 		return;
 	}
 }
-
+/*
+Fonction dessinant une ligne sur le DrawingLayer.
+*/
+function DrawingLayerLineTo(index1, index2)
+{
+	var tmpPt  = new Object();
+	var viewMat = fl.getDocumentDOM().viewMatrix;
+	tmpPt.x = thetrapezium[index1][index2];
+	tmpPt.y = thetrapezium[index1][index2+1];
+	transformPoint(tmpPt,  viewMat);
+	fl.drawingLayer.lineTo(tmpPt.x,  tmpPt.y);	
+}
+/*
+Fonction déplaçant la position courante sur le DrawingLayer.
+*/
+function DrawingLayerMoveTo(index1, index2)
+{
+	var tmpPt  = new Object();
+	var viewMat = fl.getDocumentDOM().viewMatrix;
+	tmpPt.x = thetrapezium[index1][index2];	
+	tmpPt.y = thetrapezium[index1][index2+1];
+	transformPoint(tmpPt,  viewMat);
+	fl.drawingLayer.moveTo(tmpPt.x,  tmpPt.y);
+}
 /*
 */
 function trapeziumToPath()
