@@ -4,6 +4,22 @@
 */
 
 /*
+Includes
+var JSFL_PATH = fl.configURI+"PATH";
+var included = {};
+function include(file) {
+	if (included[file]) { return; }
+	included[file] = true;
+	eval(FLfile.read(JSFL_PATH+file+".jsfl"));
+}
+ 
+include("MyClass");
+var foo = new MyClass();
+foo.run();
+*/
+
+
+/*
 	Variables globales de l'outil
 */
 

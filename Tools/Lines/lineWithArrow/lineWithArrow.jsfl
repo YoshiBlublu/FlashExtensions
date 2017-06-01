@@ -383,3 +383,20 @@ function transformPoint(pt, mat)
 
 	return;
 }
+
+/*
+Classes
+*/
+
+var lineWithArrowClass = function(){}
+
+lineWithArrowClass.Origine = {x:0, y:0};
+lineWithArrowClass.Finale = {x:0, y:0};
+
+lineWithArrowClass.Point1 = {x:0, y:0};
+lineWithArrowClass.Point2 = {x:0, y:0};
+lineWithArrowClass.Point3 = {x:0, y:0};
+lineWithArrowClass.Point4 = {x:0, y:0};
+lineWithArrowClass.Point5 = {x:0, y:0};
+lineWithArrowClass.Point6 = {x:0, y:0};
+

@@ -15,6 +15,8 @@ var offsetX = 0.5;
 var upLine = 0.5;
 var update = false;
 
+var trapezium = new Trapezium();
+
 /*
 Fonction appelée à l'ouverture de Flash et lorsque l'outil extensible est chargé dans le panneau Outils. Elle permet de
 définir toutes les informations dont Flash a besoin à propos de cet outil.
@@ -83,12 +85,11 @@ function mouseMove(mouseLoc)
 		var dy = pt2.y - pt1.y;
 		var absdx = Math.abs(dx);
 		var absdy = Math.abs(dy);
+		point1 = {x:pt1.x, y:pt1.y};
+		point2 = {x:pt2.x, y:pt2.y};
 		
 		if (fl.tools.shiftIsDown)
 		{
-			point1 = {x:pt1.x, y:pt1.y};
-			point2 = {x:pt2.x, y:pt2.y};
-			
 			if(absdx > absdy)
 				point2.y = point1.y + (absdx * (dy > 0? 1 : -1));
 			else
@@ -96,16 +97,11 @@ function mouseMove(mouseLoc)
 		}
 		else if (fl.tools.ctlIsDown)
 		{
-			changetrapeziumWidth(pt2);
+			//changetrapeziumWidth(pt2);
 		}
 		else if (fl.tools.altIsDown)
 		{
-			changetrapeziumOffset(pt2);
-		}
-		else 
-		{
-			point1 = {x:pt1.x, y:pt1.y};
-			point2 = {x:pt2.x, y:pt2.y};
+			//changetrapeziumOffset(pt2);
 		}
 		
 		if ((absdx > 2) || (absdy > 2))
@@ -166,7 +162,7 @@ function keyUp(){}
 */
 
 /*
-Fonction qui calcul les points pour le dessin de la ligne avec sa flèche.
+Fonction qui calcul les points pour le dessin du trapèze avec sa flèche.
 */
 function buildtrapeziumObj(pt1,  pt2){
 	//
@@ -185,27 +181,17 @@ function buildtrapeziumObj(pt1,  pt2){
 	thetrapezium[0][7] = pt2.y;
 	thetrapezium[0][8] = pt1.x+ofX;
 	thetrapezium[0][9] = pt1.y;
-	return;
+	
+	trapezium.Initialisation(pt1, pt2);
+
 }
 /*
 */
 function drawtrapeziumObj()
 {
 	if (thetrapezium[0].length != 0){
-/* 		var tmpPt  = new Object();
-		var viewMat = fl.getDocumentDOM().viewMatrix;
-		tmpPt.x = thetrapezium[0][0];
-		tmpPt.y = thetrapezium[0][1];
-		transformPoint(tmpPt,  viewMat);
-		fl.drawingLayer.moveTo(tmpPt.x,  tmpPt.y); */
 		DrawingLayerMoveTo(0,0);
 		for (var i=2; i<thetrapezium[0].length; i+=2) {
-			/*
-			tmpPt.x = thetrapezium[0][i];
-			tmpPt.y = thetrapezium[0][i+1];
-			transformPoint(tmpPt,  viewMat);
-			fl.drawingLayer.lineTo(tmpPt.x,  tmpPt.y);
-			*/
 			DrawingLayerLineTo(0,i);
 		}
 		return;
@@ -287,3 +273,46 @@ function transformPoint(pt, mat)
 
 	return;
 }
+
+/*
+Classes
+*/
+
+/*
+Classe permettant de représenter un trapèze.
+*/
+Trapezium = function(){}
+var trapeziumClass = Trapezium.prototype;
+/*
+Propriétés
+*/
+trapeziumClass.Point1 = {x:0, y:0};
+trapeziumClass.Point2 = {x:0, y:0};
+trapeziumClass.Point3 = {x:0, y:0};
+trapeziumClass.Point4 = {x:0, y:0};
+trapeziumClass.UpLine = 0.5;
+trapeziumClass.OffsetX = 0.5;
+trapeziumClass.Inialized = false;
+/*
+Initialisation
+*/
+trapeziumClass.Initialisation = function(point1, point2)
+{
+	var dx = pt2.x-pt1.x;
+	var dy = pt2.y-pt1.y;
+	var upX = dx*this.UpLine;
+	var ofX = upX*(1-this.OffsetX);
+	
+	this.Point1.x = pt1.x + ofX;
+	this.Point1.y = pt1.y;
+	this.Point2.x = pt1.x + ofX + upL;
+	this.Point2.x = pt1.y;
+	this.Point3.x = pt2.x;
+	this..Point3.x = pt2.y;
+	this.Point4.x = pt1.x;
+	this.Point4.x = pt2.y;		
+	
+	this.Inialized = true;
+}
+
+
