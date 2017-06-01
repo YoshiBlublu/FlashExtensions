@@ -1,7 +1,7 @@
 <properties>
 	<property name="Module des flèches (pixels)"  variable="module"  min="3" max="999"  defaultValue="10"  type="Double"   />
 	<property name="Angles des flèches (degrés)"  variable="angle"  min="1" max="80"  defaultValue="45"  type="Number"   />
-	<property name="Mise à jour XMLUI" variable="miseAJour" defaultValue="false" type="Boolean" />
+	<property name="Mise à jour XMLUI" variable="update" defaultValue="false" type="Boolean" />
 </properties>
 
 

@@ -1,0 +1,7 @@
+<properties>
+	<property name="Taille de la partie haute (%)"  variable="upLine"  min="-1000" max="1000"  defaultValue="50"  type="Number"   />
+	<property name="Décalage point haut/gauche (%)"  variable="offsetX"  min="-1000" max="1000"  defaultValue="50"  type="Number"   />
+	<property name="mise à jour XMLUI"  variable="miseAJour"  defaultValue="false"  type="Boolean"   />
+</properties>
+
+

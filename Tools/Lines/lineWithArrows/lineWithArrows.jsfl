@@ -1,11 +1,26 @@
-﻿var didDrag = false;
+﻿/*
+	Fichier du code d'un outil pour l'environnement Flash écrit en JSFL.
+	Cet outil permet de dessiner une ligne avec une flèche filaire à chaque extrêmités.
+	Le module et l'angle de la flèche sont modifiables.
+	Johann Bescond, mai 2017
+*/
+
+/*
+	Variables globales de l'outil
+*/
+
+var didDrag = false;
 var thelineWithArrows = [[0],[0],[0]];
 var module = 10;
 var angle = Math.PI/4;
-var miseAJour = false;
+var update = false;
 
+/*
+Fonction appelée à l'ouverture de Flash et lorsque l'outil extensible est chargé dans le panneau Outils. Elle permet de
+définir toutes les informations dont Flash a besoin à propos de cet outil.
+*/
 function configureTool() {
-	theTool = fl.tools.activeTool;
+	var theTool = fl.tools.activeTool;
 	theTool.setToolName("lineWithArrows Tool");
 	theTool.setMenuString("lineWithArrows Tool");
 	theTool.setToolTip("lineWithArrows Tool");
@@ -15,27 +30,53 @@ function configureTool() {
 	
 	theTool.setPI("shape");
 }
-
+/*
+Cette fonction est appelée lorsqu’un outil est actif et que l’utilisateur en modifie les options dans l’inspecteur
+Propriétés. Vous pouvez utiliser la propriété tools.activeTool pour demander les valeurs actuelles des options (voir
+tools.activeTool).
+*/ 
 function notifySettingsChanged() {
 	var theTool = fl.tools.activeTool;
 	module = theTool.module;
 	angle = (theTool.angle*(2*Math.PI))/360;
-	miseAJour = theTool.miseAJour;
+	update = theTool.update;
 }
-
+/*
+Cette fonction est appelée lorsque l'outil extensible est actif et que l'utilisateur déplace sa souris, ce qui permet au script
+de définir des pointeurs personnalisés. Le script doit appeler tools.setCursor() pour désigner le pointeur à utiliser.
+La liste des pointeurs et des valeurs entières correspondantes figure dans la section tools.setCursor().
+*/
 function setCursor() {
 	fl.tools.setCursor( 0 ); // type du curseur
 }
-
+/*
+Fonction appelée lorsque l’outil extensible est activé (c’est-à-dire lorsqu’il est sélectionné dans le panneau Outils).
+Cette fonction vous permet d'exécuter toute tâche d'initialisation requise par l'outil.
+*/
 function activate(){}
-
+/*
+Cette fonction est appelée lorsque l’outil extensible est désactivé (c’est-à-dire lorsque l’utilisateur sélectionne un autre
+outil). Elle permet d’effectuer toute opération de nettoyage nécessaire avant la désactivation de cet outil.
+*/
 function deactivate(){}
-
+/*
+Cette fonction est appelée si l’outil extensible est actif lors d’un clic de souris alors que le pointeur se trouve sur la scène.
+*/
 function mouseDown() {
 	fl.drawingLayer.beginDraw();
 	didDrag = false;
 }
-
+/*
+Fonction appelée lorsque l'outil extensible est actif et que l'utilisateur double-clique sur la scène.
+*/
+function mouseDoubleClick() 
+{
+	// statements
+}
+/*
+Fonction appelée lorsque l'outil extensible est actif et que l'utilisateur survole un point précis de la scène avec sa souris.
+Le ou les boutons de la souris peuvent être enfoncés ou non.
+*/
 function mouseMove(mouseLoc) {
 	if (fl.tools.mouseIsDown) {
 		var pt1 = fl.tools.penDownLoc;
@@ -95,7 +136,10 @@ function mouseMove(mouseLoc) {
 		}
 	}
 }
-
+/*
+Fonction appelée lorsque l'outil extensible est actif et que l'utilisateur relâche le bouton de sa souris après avoir cliqué
+sur la scène.
+*/
 function mouseUp()
 {
 	fl.drawingLayer.endDraw();
@@ -104,7 +148,10 @@ function mouseUp()
 		path.makeShape();
 	}
 }
-
+/*
+Cette fonction est appelée si l’outil extensible est actif lorsque l’utilisateur appuie sur une touche. Le script doit alors
+appeler tools.getKeyDown() pour identifier la touche en question.
+*/
 function keyDown() {
 	if (fl.tools.mouseIsDown) {
 		savedAngle = angle;
@@ -113,18 +160,27 @@ function keyDown() {
 	}
 	if (fl.tools.getKeyDown() == 67){
 		var theTool = fl.tools.activeTool;
-		if (!miseAJour) {
-			miseAJour = true;
-			theTool.miseAJour = true;
+		if (!update) {
+			update = true;
+			theTool.update = true;
 		} else {
-			miseAJour = false;
-			theTool.miseAJour = false;
+			update = false;
+			theTool.update = false;
 		}
 	}
 }
-
+/*
+Cette fonction est appelée si l’outil extensible est actif lorsque l’utilisateur relâche une touche.
+*/
 function keyUp(){}
 
+/*
+	Functions spécifiques de l'outil
+*/
+
+/*
+Fonction qui calcul les points pour le dessin de la ligne avec sa flèche.
+*/
 function buildlineWithArrowsObj(pt1,  pt2) {
 	//
 	var dx = pt2.x - pt1.x;
@@ -180,7 +236,9 @@ function buildlineWithArrowsObj(pt1,  pt2) {
 	thelineWithArrows[2][5] = pt2.y-ofY4;
 	return;
 }
-
+/*
+Fonction de dessin de la ligne avec sa flèche sur le DrawingLayer.
+*/
 function drawlineWithArrowsObj() {
 	if (thelineWithArrows[0].length != 0){
 		var tmpPt  = new Object;
@@ -221,7 +279,33 @@ function drawlineWithArrowsObj() {
 	}
 }
 
-
+/*
+Fonction dessinant une ligne sur le DrawingLayer.
+*/
+function DrawingLayerLineTo(index1, index2)
+{
+	var tmpPt  = new Object();
+	var viewMat = fl.getDocumentDOM().viewMatrix;
+	tmpPt.x = thelineWithArrows[index1][index2];
+	tmpPt.y = thelineWithArrows[index1][index2+1];
+	transformPoint(tmpPt,  viewMat);
+	fl.drawingLayer.lineTo(tmpPt.x,  tmpPt.y);	
+}
+/*
+Fonction déplaçant la position courante sur le DrawingLayer.
+*/
+function DrawingLayerMoveTo(index1, index2)
+{
+	var tmpPt  = new Object();
+	var viewMat = fl.getDocumentDOM().viewMatrix;
+	tmpPt.x = thelineWithArrows[index1][index2];	
+	tmpPt.y = thelineWithArrows[index1][index2+1];
+	transformPoint(tmpPt,  viewMat);
+	fl.drawingLayer.moveTo(tmpPt.x,  tmpPt.y);
+}
+/*
+Fonction retournant le "path" pour le dessin de la ligne sur la scène courante.
+*/
 function lineWithArrowsToPath() {
 	var path = fl.drawingLayer.newPath();
 	path.addPoint( thelineWithArrows[0][0],  thelineWithArrows[0][1]);
@@ -243,7 +327,7 @@ function changelineWithArrowsAngle(pt2) {
 	angle = savedAngle + incx;
 	if (angle < 0) angle = 0;
 	if (angle > Math.PI/2) angle = Math.PI/2;
-	if (miseAJour) {
+	if (update) {
 		var theTool = fl.tools.activeTool;
 		theTool.angle = Math.floor((angle/(2*Math.PI))*360);
 	}
@@ -254,7 +338,7 @@ function changelineWithArrowsModule(pt2) {
 	module = savedModule + incx;
 	if (module < 0) module = 0;
 	if (module > 999) module = 999;
-	if (miseAJour) {
+	if (update) {
 		var theTool = fl.tools.activeTool;
 		theTool.module = module;
 	}
