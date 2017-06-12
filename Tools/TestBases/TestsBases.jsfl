@@ -59,9 +59,9 @@ Shape.DrawingLayerMoveTo = function(index1)
 /*
 Classe permettant de représenter un trapèze.
 */
-Trapezium = function(){}
+Trapezium = new Shape();
 // Héritage
-var trapeziumClass = new Shape();
+var trapeziumClass = Trapezium.prototype;
 /*
 Propriétés
 */
